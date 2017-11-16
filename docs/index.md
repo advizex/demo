@@ -1,6 +1,6 @@
-# Advizex Container Services
+# Advizex Container Boot Camp
 
-This is a collection of services for use in pre-sales and delivery engagements.  
+This boot camp can be used in pre-sales and delivery engagements.  
 
 _NOTE: Engagement models and sample SOWs will be add in the future._
 
@@ -29,6 +29,10 @@ The tracks below can be given sequentially to form a curriculum or ad hoc
 ### IaaS Foundations for Containers
 
 [_planned_] An engineer-led workshop that provides a concrete, hands-on introduction to leveraging modern IaaS platforms to run containers
+
+### Costing Foundations for Containers
+
+[planned] A business oriented workshop that introduces concepts and real-world use-cases focusing on the financial implications of containers 
 
 ## Jumpstarts
 
