@@ -8,6 +8,10 @@ To deliver this workshop you will need at least one host with Docker installed. 
 
 ##Setting Up Your Client Machine
 
+To do this workshop you will need Docker, Docker Compose, and Docker Machine.
+
+### Installing Docker
+
 All the editions of Docker on different platforms are now available from the Docker store
 
 - https://store.docker.com/
@@ -18,7 +22,7 @@ Download your flavor, this document is based on Docker CE running on Ubuntu 16.0
 
 After everything is setup, you should be able to get `version` and `info` from you client's Docker daemon
 
-```sh
+```bash
 $ docker version
 Client:
  Version:      17.09.0-ce
@@ -39,4 +43,97 @@ Server Version: 17.09.0-ce
 ...
 ```
 
-Congrats! You're ready to start the workshop :)
+As a final test, try
+
+```bash
+$ docker run hello-world
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+...
+```
+
+### Installing Docker Compose
+
+Install compose by following the instructions here
+
+- https://docs.docker.com/compose/install/
+
+### Installing Docker Machine
+
+Install machine by following the instructions here
+
+- https://docs.docker.com/machine/install-machine/
+
+Congrats! You're client machine is ready :)
+
+## Setting up Host Machines
+
+_Note: this step is only needed for the Docker Swarm portion_
+
+For host setup we will use Docker Machine to create 3 hosts in Google's cloud.  Follow the setup instructions here
+
+- https://docs.docker.com/machine/drivers/gce/
+
+_Note: the above directions are outdated with respect to Application Default Credentials, you need to login with `gcloud auth application-default login` to use the example below_
+
+Then you can create all 3 hosts with this simple script
+
+```bash
+#!/bin/bash -e
+
+[ -z $1 ] && echo "Missing PREFIX" && exit
+
+PREFIX=$1
+PROJECT_ID='advizex-184819'
+
+for node in {1..3}; do
+docker-machine create \
+    --driver google \
+    --google-project $PROJECT_ID \
+    "${PREFIX}-${node}" &
+done
+```
+
+Run it like
+
+```
+$ ./bin/create-hosts my-host
+```
+
+If all goes well, you should be able to see 3 shiny new machines
+
+```bash
+$ docker-machine ls
+NAME        ACTIVE   DRIVER   STATE     URL                         SWARM   DOCKER        ERRORS
+my-host-1   -        google   Running   tcp://104.198.202.6:2376            v17.10.0-ce   
+my-host-2   -        google   Running   tcp://104.197.11.162:2376           v17.10.0-ce   
+my-host-3   -        google   Running   tcp://35.188.206.188:2376           v17.10.0-ce   
+```
+
+_Note: Swarm column empty at this point is normal_
+
+To use a different provider follow the appropriate directions here
+
+- https://docs.docker.com/machine/drivers/
+
+Test a host like this
+
+```bash
+jack@jackbook:~ 
+$ eval $(docker-machine env my-host-1)
+
+jack@jackbook:~ [my-host-1]
+$ docker run hello-world
+Unable to find image 'hello-world:latest' locally
+latest: Pulling from library/hello-world
+9a0669468bf7: Pull complete 
+Digest: sha256:cf2f6d004a59f7c18ec89df311cf0f6a1c714ec924eebcbfdd759a669b90e711
+Status: Downloaded newer image for hello-world:latest
+
+Hello from Docker!
+This message shows that your installation appears to be working correctly.
+...
+```
+
+Congrats! Your hosts are ready for the workshop.
