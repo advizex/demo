@@ -6,9 +6,9 @@ _NOTE: Engagement models and sample SOWs will be add in the future._
 
 The tracks below can be given sequentially to form a curriculum or ad hoc
 
-##Talks
+## Talks
 
-###Container Concepts 
+### Container Concepts 
 
 [_TBD_] A talk geared for organizations new to containers that introduces containers, their use-cases, and the state-of-the-art in a product and platform agnostic format.
 
