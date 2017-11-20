@@ -2,7 +2,7 @@ version: '2'
 
 services:
   postgres:
-    image: postgres
+    image: advizex/postgres
     container_name: asciinema_postgres
     restart: unless-stopped
     volumes:
@@ -11,7 +11,7 @@ services:
     ### configuration options for this image.
 
   redis:
-    image: redis
+    image: advizex/redis
     container_name: asciinema_redis
     restart: unless-stopped
     volumes:
