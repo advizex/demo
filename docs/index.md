@@ -14,25 +14,21 @@ The tracks below can be given sequentially to form a curriculum or ad hoc
 
 ## Workshops
 
-### Container Foundations with Swarm
+### Container Foundations with Docker
 
-[_in progress_] An engineer-led workshop that provides a concrete, hands-on introduction to containers and container orchestration with Docker Swarm focus.
+[_in progress_] An engineer-led workshop that provides a concrete, hands-on introduction to containers with Docker.
 
-### Container Foundations with Kubernetes
+### PaaS Foundations with Kubernetes, Swarm, and Mesos
 
-[_planned_] An engineer-led workshop that provides a concrete, hands-on introduction to containers and container orchestration with Kubernetes focus.
-
-### Container Foundations with Mesos
-
-[_TBD_] An engineer-led workshop that provides a concrete, hands-on introduction to containers and container orchestration with Mesos/Marathon focus.
+[_planned_] An engineer-led workshop that provides a concrete, hands-on introduction to container orchestration with Kubernetes focus.
 
 ### IaaS Foundations for Containers
 
-[_planned_] An engineer-led workshop that provides a concrete, hands-on introduction to leveraging modern IaaS platforms to run containers
+[_planned_] An engineer-led workshop that provides a concrete, hands-on introduction to leveraging modern IaaS platforms to run containers.
 
 ### Costing Foundations for Containers
 
-[planned] A business oriented workshop that introduces concepts and real-world use-cases focusing on the financial implications of containers 
+[planned] A business oriented workshop that introduces concepts and real-world use-cases focusing on the financial implications of containers.
 
 ## Jumpstarts
 

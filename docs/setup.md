@@ -57,13 +57,13 @@ This message shows that your installation appears to be working correctly.
 
 Install compose by following the instructions here
 
-- https://docs.docker.com/compose/install/
+- [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/)
 
 ### Installing Docker Machine
 
 Install machine by following the instructions here
 
-- https://docs.docker.com/machine/install-machine/
+- [https://docs.docker.com/machine/install-machine/](https://docs.docker.com/machine/install-machine/)
 
 Congrats! You're client machine is ready :)
 
@@ -137,3 +137,5 @@ This message shows that your installation appears to be working correctly.
 ```
 
 Congrats! Your hosts are ready for the workshop.
+
+<script type="text/javascript" src="http://localhost:3000/a/KLgHeIVgN111rrUtAIf9iCT5l.js?rows=15" id="asciicast-KLgHeIVgN111rrUtAIf9iCT5l" async data-rows=15 data-autoplay=true></script>
