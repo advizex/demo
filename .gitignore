@@ -1,2 +1,5 @@
 runbook/build/
 npm-debug.log
+asciinema/log/
+asciinema/uploads/
+asciinema/volumes/
