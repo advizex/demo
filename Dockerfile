@@ -7,7 +7,10 @@ RUN pip install seqdiag
 RUN pip install mkdocs-bootswatch
 RUN pip install mkdocs-bootstrap
 
-ADD . /documents
+ADD mkdocs.yml /documents/
+RUN mkdir /documents/docs/
+ADD docs/ /documents/docs/
+
 WORKDIR /documents
 
 EXPOSE 8000
