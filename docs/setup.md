@@ -146,6 +146,22 @@ Hello from Docker!
 This message shows that your installation appears to be working correctly.
 ...
 ```
+*TODO: stuff to create a swarm*
+
+```bash
+jack@jackbook:~/src/github.com/advizex/demo
+$ docker-machine ssh sandswarm-1
+docker-user@sandswarm-1:~$ sudo docker swarm init --advertise-addr 10.128.0.3
+docker-user@sandswarm-1:~$ sudo docker swarm join-token manager
+docker-user@sandswarm-1:~$ logout
+jack@jackbook:~/src/github.com/advizex/demo
+$ docker-machine ssh sandswarm-2
+docker-user@sandswarm-2:~$ sudo docker swarm join --token SWMTKN-1-27bd26v6qk0omg8atlvt23x0vw5ajpwpkiicj1memd8swct4x6-4exvvgd3mbzymdn9got5l4aqw 10.128.0.3:2377
+docker-user@sandswarm-2:~$ logout
+jack@jackbook:~/src/github.com/advizex/demo
+$ docker-machine ssh sandswarm-3
+docker-user@sandswarm-3:~$ sudo docker swarm join --token SWMTKN-1-27bd26v6qk0omg8atlvt23x0vw5ajpwpkiicj1memd8swct4x6-4exvvgd3mbzymdn9got5l4aqw 10.128.0.3:2377
+```
 
 Congrats! Your hosts are ready for the workshop.
 
