@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "title": null,
+  "height": 36,
+  "duration": 0.411742,
+  "command": null,
+  "env": {"TERM":"screen","SHELL":"/bin/bash"},
+  "width": 181,
+  "stdout": [
+    [0.05471,"\u001b[01;32mjack@jackbook\u001b[00m:\u001b[01;34m~/src/github.com/advizex/demo/asciinema\u001b[00m\r\r\n$ "],
+    [0.077,"l"],
+    [0.077,"s"],
+    [0.199623,"\r\n"],
+    [0.001777,"docker-compose.yml  foo-cast  \u001b[0m\u001b[01;34mlog\u001b[0m  \u001b[01;34muploads\u001b[0m  \u001b[01;34mvolumes\u001b[0m\r\n"],
+    [0.001632,"\u001b[01;32mjack@jackbook\u001b[00m:\u001b[01;34m~/src/github.com/advizex/demo/asciinema\u001b[00m\r\r\n$ "]
+  ]
+}
