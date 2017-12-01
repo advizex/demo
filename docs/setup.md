@@ -18,9 +18,9 @@ All the editions of Docker on different platforms are now available from the Doc
 
 Download your flavor, this document covers 
 
-- Docker CE running on Ubuntu 16.04.3 LTS (https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/)
+- Docker CE running on Ubuntu 16.04.3 LTS https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/
 
-- Docker Toolbox running on Windows 10 Home. (https://docs.docker.com/toolbox/toolbox_install_windows/)
+- Docker Toolbox running on Windows 10 Home. https://docs.docker.com/toolbox/toolbox_install_windows/
 
 After everything is setup, you should be able to get `version` and `info` from you client's Docker daemon
 
