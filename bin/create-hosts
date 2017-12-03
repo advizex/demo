@@ -3,7 +3,7 @@
 [ -z $1 ] && echo "Missing PREFIX" && exit
 
 PREFIX=$1
-PROJECT_ID='advizex-184819'
+PROJECT_ID=$(gcloud projects list --format="value(projectId)")
 
 for node in {1..3}; do
 docker-machine create \
