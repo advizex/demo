@@ -16,11 +16,7 @@ All the editions of Docker on different platforms are now available from the Doc
 
 - https://store.docker.com/
 
-Download your flavor, this document covers 
-
-- Docker CE running on Ubuntu 16.04.3 LTS https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/
-
-- Docker Toolbox running on Windows 10 Home. https://docs.docker.com/toolbox/toolbox_install_windows/
+Download your flavor, this document covers Docker CE running on Ubuntu 16.04.3 LTS https://docs.docker.com/engine/installation/linux/docker-ce/ubuntu/
 
 After everything is setup, you should be able to get `version` and `info` from you client's Docker daemon
 
@@ -57,15 +53,11 @@ This message shows that your installation appears to be working correctly.
 
 ### Installing Docker Compose
 
-_Note: This step is uncessary when using Docker Toolbox since Docker Compose is installed as part of the Docker Toolbox install._
-
 Install compose by following the instructions here
 
 - [https://docs.docker.com/compose/install/](https://docs.docker.com/compose/install/)
 
 ### Installing Docker Machine
-
-_Note: This step is uncessary when using Docker Toolbox since Docker Machine is installed as part of the Docker Toolbox install._
 
 Install machine by following the instructions here
 
@@ -83,10 +75,7 @@ For host setup we will use Docker Machine to create 3 hosts in Google's cloud.  
 
 _Note: the above directions are outdated with respect to Application Default Credentials, you need to login with one of the following commands to use the example below_
 
--`gcloud auth application-default login` for Docker CE running on Ubuntu
-
--`gcloud.cmd auth application-default login` for Docker Toolbox running on Windows
-
+-`gcloud auth application-default login`
 
 Then you can create all 3 hosts with this simple script
 
