@@ -18,9 +18,9 @@ The tracks below can be given sequentially to form a curriculum or ad hoc
 
 [_in progress_] An engineer-led workshop that provides a concrete, hands-on introduction to containers with Docker.
 
-### PaaS Foundations with Kubernetes, Swarm, and Mesos
+### PaaS Foundations with Docker EE
 
-[_planned_] An engineer-led workshop that provides a concrete, hands-on introduction to container orchestration with Kubernetes focus.
+[_planned_] An engineer-led workshop that provides a concrete, hands-on introduction to container orchestration with Kubernetes and Swarm focus.
 
 ### IaaS Foundations for Containers
 
