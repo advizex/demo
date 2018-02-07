@@ -1,0 +1,25 @@
+#!/bin/bash -e
+
+for node in {1..4}; do
+  docker-machine create \
+    --driver 'generic' \
+    --generic-ip-address="$(dig +short ts${node}.maas)" \
+    --generic-ssh-key="$HOME/.ssh/id_rsa" \
+    --generic-ssh-user='ubuntu' \
+    "ts${node}.maas" &
+  PID[$node]=$!
+done
+
+echo -n "Creating Docker hosts..."
+wait ${PID[*]}
+echo "done"
+
+echo "Creating Swarm..."
+eval $(docker-machine env ts1.maas)
+docker swarm init 
+JOIN=$(docker swarm join-token manager | grep 'docker swarm join')
+for n in {2..4}; do
+  eval $(docker-machine env "ts$n.maas")
+  $JOIN
+done
+echo "done"
