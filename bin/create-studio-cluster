@@ -1,21 +1,36 @@
 #!/bin/bash -e
 
+echo -n "Creating Docker hosts..."
 for node in {1..4}; do
-  docker-machine create \
-    --driver 'generic' \
-    --generic-ip-address="$(dig +short ts${node}.maas)" \
-    --generic-ssh-key="$HOME/.ssh/id_rsa" \
-    --generic-ssh-user='ubuntu' \
-    "ts${node}.maas" &
-  PID[$node]=$!
+  ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas 'sudo apt-get install -y apt-transport-https curl software-properties-common'
+  ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas "curl -fsSL $DOCKER_EE_URL/ubuntu/gpg | sudo apt-key add -"
+  ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas "sudo add-apt-repository \"deb [arch=amd64] $DOCKER_EE_URL/ubuntu \$(lsb_release -cs) stable-17.06\""
+  ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas "sudo apt-get update"
+  ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas "sudo apt-get install -y docker-ee"
+  #PID[$node]=$!
 done
 
-echo -n "Creating Docker hosts..."
-wait ${PID[*]}
+#wait ${PID[*]}
 echo "done"
 
 echo "Creating Swarm..."
-eval $(docker-machine env ts1.maas)
+set -x
+TS1_IP=$(dig +short ts1.maas)
+
+ssh -o StrictHostKeyChecking=no ubuntu@ts1.maas "sudo docker run --rm \
+  --name ucp \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  docker/ucp:3.0.0-beta2 \
+    install \
+    --force-minimums \
+    --host-address $TS1_IP \
+    --admin-username admin \
+    --admin-password 12345678 \
+    --san 'ts1.maas' \
+    --license $(curl http://10.0.0.1:8080/docker_subscription.lic)"
+
+exit
+
 docker swarm init 
 JOIN=$(docker swarm join-token manager | grep 'docker swarm join')
 for n in {2..4}; do
