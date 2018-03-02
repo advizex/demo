@@ -1,0 +1,8 @@
+put the
+
+- docker_subscription.lic
+- repo_key.pgp
+
+files in this directory and serve with http-server or simliar.
+
+TODO: make this less stupid
