@@ -5,12 +5,12 @@
 
 echo -n "Creating Docker hosts..."
 # ex: maas admin machines read | jq '.[].ip_addresses[0]'|tr -d '"'
-for node in 172.25.8.{2..4}; do
-  ssh $node "sudo zypper addrepo ${DOCKER_EE_URL}/sles/12.3/x86_64/stable-17.06 docker-ee-stable"
-  ssh $node "sudo rpm --import ${DOCKER_EE_URL}/sles/gpg"
-  ssh $node "sudo zypper refresh"
-  ssh $node "sudo zypper install -y docker-ee"
-  ssh $node "sudo service docker restart"
+for node in root@172.25.8.{2..4}; do
+  ssh $node "zypper addrepo ${DOCKER_EE_URL}/sles/12.3/x86_64/stable-17.06 docker-ee-stable"
+  ssh $node "rpm --import ${DOCKER_EE_URL}/sles/gpg"
+  ssh $node "zypper refresh"
+  ssh $node "zypper install -y docker-ee"
+  ssh $node "service docker restart"
   #PID[$node]=$!
 done
 
@@ -20,7 +20,7 @@ echo "done"
 set -x
 MASTER_IP=172.25.8.2
 
-ssh root@$MASTER_IP "sudo docker run --rm \
+ssh root@$MASTER_IP "docker run --rm \
   --name ucp \
   -v /var/run/docker.sock:/var/run/docker.sock \
   docker/ucp:3.0.0-beta2 \
@@ -32,9 +32,9 @@ ssh root@$MASTER_IP "sudo docker run --rm \
     --san '$MASTER_IP'"
 
 
-JOIN=$(ssh root@$MASTER_IP "sudo docker swarm join-token worker | grep 'docker swarm join'")
+JOIN=$(ssh root@$MASTER_IP "docker swarm join-token worker | grep 'docker swarm join'")
 for node in 172.25.8.{2..4}; do
-  ssh root@$node "sudo $JOIN"
+  ssh root@$node "$JOIN"
 done
 
 echo "done"
