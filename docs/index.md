@@ -52,6 +52,12 @@ A talk geared for organizations new to containers that introduces containers, th
   - CIS focus
   - MBA focus
 
+- Goal is to bring clarity around what a container really is
+
+### Container Ecosystem
+
+[_TBD_] A talk geared for organizations new to containers that introduces the container ecosystem (CNCF landscape); including common tools, patterns, and practices being leveraged. 
+
 ## Workshops
 
 ### Container Foundations with Docker
