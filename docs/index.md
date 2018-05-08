@@ -1,6 +1,6 @@
 # Advizex Container Boot Camp
 
-This boot camp can be used in pre-sales and delivery engagements.  
+This boot camp can be used in pre-sales and delivery engagements.
 
 _NOTE: Engagement models and sample SOWs will be add in the future._
 
@@ -8,9 +8,49 @@ The tracks below can be given sequentially to form a curriculum or ad hoc
 
 ## Talks
 
-### Container Concepts 
+### Tracks
 
-[_TBD_] A talk geared for organizations new to containers that introduces containers, their use-cases, and the state-of-the-art in a product and platform agnostic format.
+#### MIS focus
+
+  - introductory
+  - focuses on concepts
+  - heavy use of analogies
+  - very high-level demonstration
+  - out-of-the-weeds, no bits & bytes
+
+#### CIS focus
+
+  - very technical
+  - demo-heavy
+
+#### MBA focus
+
+  - non-technical
+  - dicusses business objectives, benefits, impacts
+  - procurement and operationalization strategies
+  - organizational challenges
+  - industry trends and statistics (i.e. Gartner)
+
+---
+
+### Container Concepts
+
+  - MIS focus
+    * compare to (contrast with) VMs
+  - CIS focus
+    * kernel-level discussion
+    * linux knowledge prerequisite
+  - MBA focus
+
+### Container Ecosystem
+
+A talk geared for organizations new to containers that introduces containers, their use-cases, and the state-of-the-art in a product and platform agnostic format.
+
+### Container Management
+
+  - MIS focus
+  - CIS focus
+  - MBA focus
 
 ## Workshops
 
@@ -28,11 +68,11 @@ The tracks below can be given sequentially to form a curriculum or ad hoc
 
 ### Costing Foundations for Containers
 
-[planned] A business oriented workshop that introduces concepts and real-world use-cases focusing on the financial implications of containers.
+[_planned_] A business oriented workshop that introduces concepts and real-world use-cases focusing on the financial implications of containers.
 
 ## Jumpstarts
 
-### Production-ready OpenShift Using VRA  
+### Production-ready OpenShift Using VRA
 
 [_TBD_] Completely made this up ;)
 
