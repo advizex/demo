@@ -7,7 +7,7 @@ echo -n "Creating Docker hosts..."
 # ex: maas admin machines read | jq '.[].ip_addresses[0]'|tr -d '"'
 for node in {1..4}; do
   ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas 'sudo apt-get install -y apt-transport-https curl software-properties-common'
-  ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas "curl -fsSL http://10.0.0.1:8080/repo_key.pgp | sudo apt-key add -"
+  ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas "curl -fsSL $DOCKER_EE_URL/repo_key.pgp | sudo apt-key add -"
   ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas "sudo add-apt-repository \"deb [arch=amd64] $DOCKER_EE_URL/ubuntu \$(lsb_release -cs) stable-17.06\""
   ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas "sudo apt-get update"
   ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas "sudo apt-get install -y docker-ee"
