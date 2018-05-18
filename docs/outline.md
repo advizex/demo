@@ -41,17 +41,16 @@
 
 - Call out on DB -- using mssql in a container which is cool (optional)
 
+- make-graph.sh to show what we are deploying
+
 - Application overiew
 
     - Phase 1 of demo is containers deployed on laptop
+
+- Show the apps running and the processes on the local host
+
+- Quick chat around orchestration/kubernetes and running containers in prod
+
     - Phase 2 is demo running on kubernetes in GCP 
-
-- make-graph.sh to show what we are deploying
-
-- Step through the docker file (kubernetes?) and explain the components
-
-- Show the apps running and the processes on the host
-
-- Quick chat around orchestration?
 
 - Interactive opportunity, allow attendees to spin up containers?
