@@ -7,6 +7,8 @@
 
 ## Time
 
+- June 27th
+
 - 1:30
 
   - 5-10 minute welcome
@@ -26,5 +28,4 @@
 
 ## Expectations
 
-- Provide syllabus for next week
 - Loves the interactive content ideas
