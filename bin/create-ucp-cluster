@@ -1,14 +1,14 @@
 #!/bin/bash -e
 
-[ -z "$DOCKER_EE_URL"] &&
-  DOCKER_EE_URL='https://storebits.docker.com/ee/m/sub-39813958-ec09-443d-ae0d-d8925430530f'
+#[ -z "$DOCKER_EE_URL"] &&
+#  DOCKER_EE_URL='https://storebits.docker.com/ee/m/sub-39813958-ec09-443d-ae0d-d8925430530f'
 
 echo -n "Creating Docker hosts..."
 # ex: maas admin machines read | jq '.[].ip_addresses[0]'|tr -d '"'
 for node in {1..4}; do
-  ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas 'sudo apt-get install -y apt-transport-https curl software-properties-common'
-  ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas "curl -fsSL $DOCKER_EE_URL/repo_key.pgp | sudo apt-key add -"
-  ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas "sudo add-apt-repository \"deb [arch=amd64] $DOCKER_EE_URL/ubuntu \$(lsb_release -cs) stable-17.06\""
+  #ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas 'sudo apt-get install -y apt-transport-https curl software-properties-common'
+  #ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas "curl -fsSL $DOCKER_EE_URL/repo_key.pgp | sudo apt-key add -"
+  #ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas "sudo add-apt-repository \"deb [arch=amd64] $DOCKER_EE_URL/ubuntu \$(lsb_release -cs) stable-17.06\""
   ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas "sudo apt-get update"
   ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas "sudo apt-get install -y docker-ee"
   #PID[$node]=$!
@@ -23,14 +23,14 @@ TS1_IP=$(dig +short ts1.maas)
 ssh -o StrictHostKeyChecking=no ubuntu@$TS1_IP "sudo docker run --rm \
   --name ucp \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  docker/ucp:3.0.0-beta2 \
+  docker/ucp:3.0.1 \
     install \
     --force-minimums \
     --host-address $TS1_IP \
     --admin-username admin \
     --admin-password 12345678 \
-    --san 'ts1.maas' \
-    --license $(curl http://10.0.0.1:8080/docker_subscription.lic)"
+    --san 'ts1.maas'"
+#--license $(curl http://10.0.0.1:8080/docker_subscription.lic)"
 
 
 JOIN=$(ssh -o StrictHostKeyChecking=no ubuntu@$TS1_IP "sudo docker swarm join-token worker | grep 'docker swarm join'")
