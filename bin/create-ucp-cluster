@@ -12,6 +12,12 @@ for node in {1..4}; do
   ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas "sudo apt-get update"
   ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas "sudo apt-get install -y docker-ee"
   #PID[$node]=$!
+
+  ssh -o StrictHostKeyChecking=no ubuntu@ts$node.maas "sudo docker volume create \
+    --driver local \
+    --opt type=ext4 \
+    --opt device=/dev/mapper/vg0-lv0 \
+    ucp-auth-store-data"
 done
 
 #wait ${PID[*]}
@@ -31,7 +37,6 @@ ssh -o StrictHostKeyChecking=no ubuntu@$TS1_IP "sudo docker run --rm \
     --admin-password 12345678 \
     --san 'ts1.maas'"
 #--license $(curl http://10.0.0.1:8080/docker_subscription.lic)"
-
 
 JOIN=$(ssh -o StrictHostKeyChecking=no ubuntu@$TS1_IP "sudo docker swarm join-token worker | grep 'docker swarm join'")
 for n in {2..4}; do
