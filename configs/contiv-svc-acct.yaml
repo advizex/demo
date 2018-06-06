@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: contiv-netplugin
+  namespace: kube-system
+  labels:
+    kubernetes.io/cluster-service: "true"
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: contiv-netmaster
+  namespace: kube-system
+  labels:
+    kubernetes.io/cluster-service: "true"

@@ -1,0 +1,38 @@
+#!/bin/bash -e
+
+echo "Creating RBAC roles and groups..."
+
+#set -x
+TS1_IP=$(dig +short ts1.maas)
+
+# install kubectl binary if not present on machine
+ssh -o StrictHostKeyChecking=no ubuntu@$TS1_IP "if [ ! -f /usr/local/bin/kubectl ]; then \
+  curl -LO https://storage.googleapis.com/kubernetes-release/release/$(curl -s \
+    https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl && \
+  chmod +x ./kubectl && \
+  sudo mv ./kubectl /usr/local/bin/kubectl; fi"
+
+# copy contiv serviceaccount config over and apply
+scp $(dirname "$(readlink -f "$0")")/../configs/contiv-svc-acct.yaml ubuntu@$TS1_IP:
+ssh -o StrictHostKeyChecking=no ubuntu@$TS1_IP ". env.sh; kubectl apply -f contiv-svc-acct.yaml"
+
+echo -n "Logging into UCP API..."
+
+BEARER_TOKEN=$(curl -ks \
+  -X POST \
+  -H "Content-Type: application/json" \
+  -d '{"username": "admin", "password": "12345678"}' \
+  "https://$TS1_IP/auth/login" | 
+  python -c 'import json,sys;data=json.load(sys.stdin);print data["auth_token"]') #jq '.auth_token'
+
+echo "done (Bearer token: $BEARER_TOKEN)"
+
+# source shared ucp functions
+. ./ucp-functions
+
+# create contiv-netplugin role,grant
+create_role_grant 'contiv-netplugin' '{"Kubernetes Endpoint":{"Endpoint Get":[],"Endpoint List":[],"Endpoint Update":[],"Endpoint Watch":[]},"Kubernetes Namespace":{"Namespace Get":[],"Namespace List":[],"Namespace Update":[],"Namespace Watch":[]},"Kubernetes Node":{"Node Get":[],"Node List":[],"Node Update":[],"Node Watch":[]},"Kubernetes Network Policy":{"NetworkPolicy Watch":[],"NetworkPolicy Update":[],"NetworkPolicy List":[],"NetworkPolicy Get":[]},"Kubernetes Pod":{"Pod Get":[],"Pod List":[],"Pod Update":[],"Pod Watch":[]},"Kubernetes Service":{"Service Get":[],"Service List":[],"Service Update":[],"Service Watch":[]}}'
+
+## create contiv-netmaster role,grant
+create_role_grant 'contiv-netmaster' '{"Kubernetes Namespace":{"Namespace List":[],"Namespace Update":[],"Namespace Watch":[]},"Kubernetes Node":{"Node List":[],"Node Update":[],"Node Watch":[]},"Kubernetes Network Policy":{"NetworkPolicy Watch":[],"NetworkPolicy Update":[],"NetworkPolicy List":[]},"Kubernetes Pod":{"Pod List":[],"Pod Update":[],"Pod Watch":[]}}'
+

@@ -1,0 +1,27 @@
+#!/bin/bash -e
+
+# create UCP role,grant
+# $1 = name of role, $2 = operation json
+#   success: {"id":"UUID"}
+#   failure: {"message":"a role with that name already exists"}
+create_role_grant() {
+  echo -n "Creating $1 role/grant..."
+
+  ROLE_ID=$(curl -ks \
+    -X POST \
+    -H 'Content-Type: application/json' \
+    -H "Authorization: Bearer $BEARER_TOKEN" \
+    -d "{\"name\":\"$1\",\"system_role\":false,\"operations\":$2}" \
+    "https://$TS1_IP/roles" |
+    python -c 'import json,sys;data=json.load(sys.stdin);print data["id"]') #jq '.id'
+
+  GRANT_RETURN_CODE=$(curl -Iks \
+    -X PUT \
+    -H 'Content-Type: application/json' \
+    -H "Authorization: Bearer $BEARER_TOKEN" \
+    "https://$TS1_IP/collectionGrants/system%3Aserviceaccount%3Akube-system%3A$1/kube-system/$ROLE_ID?type=namespace" 2>/dev/null | \
+    head -n 1 | cut -d$' ' -f2)
+  # should return code 201
+  
+  echo "done (RoleID: $ROLE_ID)"
+}
