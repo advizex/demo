@@ -1,5 +1,18 @@
 #!/bin/bash -e
 
+ucp_login() {
+  echo -n "Logging into UCP API..."
+
+  BEARER_TOKEN=$(curl -ks \
+    -X POST \
+    -H "Content-Type: application/json" \
+    -d '{"username": "admin", "password": "12345678"}' \
+    "https://$TS1_IP/auth/login" |
+    python -c 'import json,sys;data=json.load(sys.stdin);print data["auth_token"]') #jq '.auth_token'
+
+  echo "done (Bearer token: $BEARER_TOKEN)"
+}
+
 # create UCP role,grant
 # $1 = name of role, $2 = operation json
 #   success: {"id":"UUID"}
@@ -22,6 +35,6 @@ create_role_grant() {
     "https://$TS1_IP/collectionGrants/system%3Aserviceaccount%3Akube-system%3A$1/kube-system/$ROLE_ID?type=namespace" 2>/dev/null | \
     head -n 1 | cut -d$' ' -f2)
   # should return code 201
-  
+
   echo "done (RoleID: $ROLE_ID)"
 }
