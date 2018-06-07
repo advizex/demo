@@ -43,8 +43,7 @@ for n in {2..4}; do
   ssh -o StrictHostKeyChecking=no ubuntu@ts$n.maas "sudo $JOIN"
 
   ssh -o StrictHostKeyChecking=no ubuntu@$TS1_IP "sudo docker node update \
-      --label-add com.docker.ucp.orchestrator.swarm=false ts$n && \
-    sudo docker node update \
+      --label-add com.docker.ucp.orchestrator.swarm=false \
       --label-add com.docker.ucp.orchestrator.kubernetes=true ts$n"
 done
 
