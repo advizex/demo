@@ -1,5 +1,9 @@
 #!/bin/bash -e
 
+json_value() {
+  python -c "import json,sys;data=json.load(sys.stdin);print data[\"$1\"]" #jq '.$1'
+}
+
 ucp_login() {
   echo -n "Logging into UCP API..."
 
@@ -7,8 +11,7 @@ ucp_login() {
     -X POST \
     -H "Content-Type: application/json" \
     -d '{"username": "admin", "password": "12345678"}' \
-    "https://$TS1_IP/auth/login" |
-    python -c 'import json,sys;data=json.load(sys.stdin);print data["auth_token"]') #jq '.auth_token'
+    "https://$TS1_IP/auth/login" | json_value 'auth_token')
 
   echo "done (Bearer token: $BEARER_TOKEN)"
 }
@@ -25,8 +28,7 @@ create_role_grant() {
     -H 'Content-Type: application/json' \
     -H "Authorization: Bearer $BEARER_TOKEN" \
     -d "{\"name\":\"$1\",\"system_role\":false,\"operations\":$2}" \
-    "https://$TS1_IP/roles" |
-    python -c 'import json,sys;data=json.load(sys.stdin);print data["id"]') #jq '.id'
+    "https://$TS1_IP/roles" | json_value 'id')
 
   GRANT_RETURN_CODE=$(curl -Iks \
     -X PUT \
