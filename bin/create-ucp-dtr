@@ -21,6 +21,6 @@ ssh -o StrictHostKeyChecking=no ubuntu@$TS1_IP "sudo docker run --rm \
 #   --ucp-url $TS1_IP \
 #   --ucp-username admin \
 #   --ucp-password 12345678 \
-#   --ucp-insecure-tls \
+#   --ucp-insecure-tls
 
 echo "done"

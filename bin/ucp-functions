@@ -16,6 +16,21 @@ ucp_login() {
   echo "done (Bearer token: $BEARER_TOKEN)"
 }
 
+get_client_bundle() {
+  echo -n "Getting client bundle..."
+
+  curl -ks \
+    -H "Authorization: Bearer $BEARER_TOKEN" \
+    "https://$TS1_IP/api/clientbundle" \
+      -o client_bundle.zip
+  #unzip client_bundle.zip
+  #eval "$(<env.sh)"
+
+  #echo 'eval "$(<env.sh)"' >> ~/.bash_profile
+
+  echo "done"
+}
+
 # create UCP role,grant
 # $1 = name of role, $2 = operation json
 #   success: {"id":"UUID"}
