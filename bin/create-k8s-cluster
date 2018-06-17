@@ -1,19 +1,21 @@
 #!/bin/bash -e
 
-echo -n "Creating Docker hosts..."
+echo "Creating Docker hosts..."
 # ex: maas admin machines read | jq '.[].ip_addresses[0]'|tr -d '"'
 for node in ts{1..4}; do
+  echo "$node: uploading configuration"
   scp -o StrictHostKeyChecking=no \
       -o UserKnownHostsFile=/dev/null \
-    config-k8s-host $node:
+    config-k8s-host $node: &>/dev/null
+  echo "$node: Base configuring"
   ssh -o StrictHostKeyChecking=no \
       -o UserKnownHostsFile=/dev/null \
-    $node 'sudo ./config-k8s-host' &
+    $node "sudo node=$node ./config-k8s-host" &
   PID[$node]=$!
 done
 
 wait ${PID[*]}
-echo "done"
+echo "Base configured all hosts"
 exit
 
 set -x
