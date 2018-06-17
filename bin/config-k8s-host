@@ -2,14 +2,19 @@
 
 echo "$node: adding repos"
 apt update &>/dev/null
-apt-get install -y docker.io apt-transport-https curl &>/dev/null
+apt-get install -y apt-transport-https curl &>/dev/null
 curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | \
     apt-key add - &>/dev/null
 cat <<EOF >/etc/apt/sources.list.d/kubernetes.list
 deb http://apt.kubernetes.io/ kubernetes-xenial main
 EOF
-echo "$node: installing k8s tools"
+
+echo "$node: installing Docker and Kubernetes"
 apt-get update &>/dev/null
-apt-get install -y kubelet kubeadm kubectl &>/dev/null
-echo "$node: k8s tools installed"
+apt-get install -y docker.io kubelet kubeadm kubectl &>/dev/null
+
+echo "$node: configuring node"
+sed -i '/swap/d' /etc/fstab
+swapoff --all 
+systemctl enable docker.service &>/dev/null
 

@@ -1,6 +1,6 @@
 #!/bin/bash -e
 
-echo "Creating Docker hosts..."
+echo "Configuring hosts..."
 # ex: maas admin machines read | jq '.[].ip_addresses[0]'|tr -d '"'
 for node in ts{1..4}; do
   echo "$node: uploading configuration"
@@ -15,27 +15,27 @@ for node in ts{1..4}; do
 done
 
 wait ${PID[*]}
+unset PID
 echo "Base configured all hosts"
-exit
 
-set -x
-TS1_IP=$(dig +short ts1.maas)
+echo "Setting up master"
+ssh ts1 'sudo kubeadm init --pod-network-cidr=192.168.0.0/16' &>/dev/null
+ssh ts1 'mkdir -p $HOME/.kube'
+ssh ts1 'sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config'
+ssh ts1 'sudo chown $(id -u):$(id -g) $HOME/.kube/config'
+scp ../configs/calico.yaml ts1: &>/dev/null
+echo "Configuring CNI"
 
-ssh -o StrictHostKeyChecking=no ubuntu@$TS1_IP "sudo docker run --rm \
-  --name ucp \
-  -v /var/run/docker.sock:/var/run/docker.sock \
-  docker/ucp:3.0.1 \
-    install \
-    --force-minimums \
-    --host-address $TS1_IP \
-    --admin-username admin \
-    --admin-password 12345678 \
-    --san 'ts1.maas'"
-#--license $(curl http://10.0.0.1:8080/docker_subscription.lic)"
+ssh ts1 'kubectl apply -f $HOME/calico.yaml' &>/dev/null
+JOIN=$(ssh -o StrictHostKeyChecking=no ts1 \
+    "sudo kubeadm token create --print-join-command")
 
-JOIN=$(ssh -o StrictHostKeyChecking=no ubuntu@$TS1_IP "sudo docker swarm join-token worker | grep 'docker swarm join'")
-for n in {2..4}; do
-  ssh -o StrictHostKeyChecking=no ubuntu@ts$n.maas "sudo $JOIN"
+echo "Setting up workers"
+for node in ts{2..4}; do
+  echo "$node: joining as worker"
+  ssh -o StrictHostKeyChecking=no $node "sudo $JOIN" &>/dev/null
+  PID[$node]=$!
 done
+wait ${PID[*]}
 
 echo "done"
