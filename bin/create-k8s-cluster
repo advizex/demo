@@ -1,0 +1,39 @@
+#!/bin/bash -e
+
+echo -n "Creating Docker hosts..."
+# ex: maas admin machines read | jq '.[].ip_addresses[0]'|tr -d '"'
+for node in ts{1..4}; do
+  scp -o StrictHostKeyChecking=no \
+      -o UserKnownHostsFile=/dev/null \
+    config-k8s-host $node:
+  ssh -o StrictHostKeyChecking=no \
+      -o UserKnownHostsFile=/dev/null \
+    $node 'sudo ./config-k8s-host' &
+  PID[$node]=$!
+done
+
+wait ${PID[*]}
+echo "done"
+exit
+
+set -x
+TS1_IP=$(dig +short ts1.maas)
+
+ssh -o StrictHostKeyChecking=no ubuntu@$TS1_IP "sudo docker run --rm \
+  --name ucp \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  docker/ucp:3.0.1 \
+    install \
+    --force-minimums \
+    --host-address $TS1_IP \
+    --admin-username admin \
+    --admin-password 12345678 \
+    --san 'ts1.maas'"
+#--license $(curl http://10.0.0.1:8080/docker_subscription.lic)"
+
+JOIN=$(ssh -o StrictHostKeyChecking=no ubuntu@$TS1_IP "sudo docker swarm join-token worker | grep 'docker swarm join'")
+for n in {2..4}; do
+  ssh -o StrictHostKeyChecking=no ubuntu@ts$n.maas "sudo $JOIN"
+done
+
+echo "done"
