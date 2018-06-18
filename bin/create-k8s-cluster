@@ -4,7 +4,7 @@ echo "Configuring hosts..."
 # ex: maas admin machines read | jq '.[].ip_addresses[0]'|tr -d '"'
 for node in ts{1..4}; do
   echo "$node: uploading configuration"
-  scp config-k8s-host $node: &>/dev/null
+  scp config-k8s-host $node:
   echo "$node: Base configuring"
   ssh $node "sudo node=$node ./config-k8s-host" &
   PID[$node]=$!
@@ -15,21 +15,21 @@ unset PID
 echo "Base configured all hosts"
 
 echo "Setting up master"
-ssh ts1 'sudo kubeadm init --apiserver-cert-extra-sans=ts1.maas --pod-network-cidr=192.168.0.0/16' &>/dev/null
+ssh ts1 'sudo kubeadm init --apiserver-cert-extra-sans=ts1.maas --pod-network-cidr=192.168.0.0/16'
 ssh ts1 'mkdir -p $HOME/.kube'
 ssh ts1 'sudo cp /etc/kubernetes/admin.conf $HOME/.kube/config'
 ssh ts1 'sudo chown $(id -u):$(id -g) $HOME/.kube/config'
-scp ../configs/calico.yaml ts1: &>/dev/null
+scp ../configs/calico.yaml ts1:
 echo "Configuring CNI"
 
-ssh ts1 'kubectl apply -f $HOME/calico.yaml' &>/dev/null
+ssh ts1 'kubectl apply -f $HOME/calico.yaml'
 JOIN=$(ssh -o StrictHostKeyChecking=no ts1 \
     "sudo kubeadm token create --print-join-command")
 
 echo "Setting up workers"
 for node in ts{2..4}; do
   echo "$node: joining as worker"
-  ssh -o StrictHostKeyChecking=no $node "sudo $JOIN" &>/dev/null
+  ssh -o StrictHostKeyChecking=no $node "sudo $JOIN"
   PID[$node]=$!
 done
 wait ${PID[*]}

@@ -16,5 +16,5 @@ apt-get install -y docker.io kubelet kubeadm kubectl &>/dev/null
 echo "$node: configuring node"
 sed -i '/swap/d' /etc/fstab
 swapoff --all 
-systemctl enable docker.service &>/dev/null
+systemctl enable docker.service
 
