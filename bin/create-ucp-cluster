@@ -29,7 +29,7 @@ TS1_IP=$(dig +short ts1.maas)
 ssh -o StrictHostKeyChecking=no ubuntu@$TS1_IP "sudo docker run --rm \
   --name ucp \
   -v /var/run/docker.sock:/var/run/docker.sock \
-  docker/ucp:3.0.1 \
+  docker/ucp:3.0.5 \
     install \
     --force-minimums \
     --host-address $TS1_IP \
